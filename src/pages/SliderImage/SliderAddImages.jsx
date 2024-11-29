@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { FaTrash, FaPlus, FaArrowLeft, FaArrowRight, FaUpload } from 'react-icons/fa';
+import { addSliderImageUrl, getSliderImageUrl, serverUrl } from '../../utils/apiRoutes';
 
 const SliderAddImages = () => {
     const [images, setImages] = useState([
-        { id: 1, src: '/assets/images/image1.jpg', selected: false, order: null },
-        { id: 2, src: '/assets/images/image2.jpg', selected: false, order: null },
-        { id: 3, src: '/assets/images/image3.jpg', selected: false, order: null },
+        // { id: 1, src: '/assets/images/image1.jpg', selected: false, order: null },
+        // { id: 2, src: '/assets/images/image2.jpg', selected: false, order: null },
+        // { id: 3, src: '/assets/images/image3.jpg', selected: false, order: null },
     ]);
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -18,6 +19,29 @@ const SliderAddImages = () => {
     useEffect(() => {
         const storedImages = JSON.parse(localStorage.getItem('sliderImages')) || [];
         if (storedImages.length) setImages(storedImages);
+    }, []);
+
+    const fetchImages = async () => {
+        try {
+            const response = await axios.get(getSliderImageUrl); // API to fetch images
+            if (response.data.success) {
+                // Update images state with backend data
+                const fetchedImages = response.data.data.map((image) => ({
+                    id: image._id,
+                    src: `${serverUrl}/${image.imageUrl}`, // Ensure URL is correct
+                    selected: false,
+                    order: null,
+                }));
+                setImages(fetchedImages);
+            } else {
+                console.error('Failed to fetch images:', response.data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching images:', error);
+        }
+    };
+    useEffect(() => {
+        fetchImages();
     }, []);
 
     // Save images to local storage whenever they change
@@ -33,10 +57,10 @@ const SliderAddImages = () => {
             prevImages.map((img) =>
                 img.id === id
                     ? {
-                          ...img,
-                          selected: !img.selected,
-                          order: img.selected ? null : Math.max(0, ...prevImages.map((i) => i.order || 0)) + 1,
-                      }
+                        ...img,
+                        selected: !img.selected,
+                        order: img.selected ? null : Math.max(0, ...prevImages.map((i) => i.order || 0)) + 1,
+                    }
                     : img
             )
         );
@@ -66,17 +90,14 @@ const SliderAddImages = () => {
     const confirmAddImages = async () => {
         try {
             const formData = new FormData();
-            formData.append('images', tempImages[0].file);
+            formData.append('image', tempImages[0].file);
 
             console.log(tempImages);
 
-            const response = await axios.post('http://localhost:3000/api/v1/slider-image', formData);
+            const response = await axios.post(addSliderImageUrl, formData);
+            console.log(response.data);
 
-            if (response.ok) {
-                const result = await response.json();
-                console.log('Images uploaded:', result);
-
-                // Update images state with backend response if needed
+            if (response.data.success) {
                 setImages((prevImages) => [...prevImages, ...tempImages]);
                 setTempImages([]); // Clear temp storage
                 setConfirmationModal(false); // Close modal

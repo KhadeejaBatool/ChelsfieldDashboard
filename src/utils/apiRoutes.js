@@ -1,12 +1,20 @@
 export const serverUrl = 'http://localhost:3000';
+export const apiUrl = 'http://localhost:3000/api/v1/';
 
+export const addSliderImageUrl = `${apiUrl}/upload-slider-image`;
+export const getSliderImageUrl = `${apiUrl}/get-slider-images`;
+
+
+// =======================  NOT USED ======================= //
 const adminRoutesUrl = `${serverUrl}/admin`;
 const employeeRoutesUrl = `${serverUrl}/employee`;
 const enquiryRoutesUrl = `${serverUrl}/enquiry`;
+const api = `${serverUrl}/api`;
 
 // enquiry api urls
 export const getAllEnquiriesUrl = `${enquiryRoutesUrl}/all_enquiries`;
 export const getAllEnquiryTypesUrl = `${enquiryRoutesUrl}/all_enquiry_types`;
+export const addEnquiryTypeUrl = `${enquiryRoutesUrl}/add_enquiry_type`;
 export const deleteEnquiryUrl = (id) => `${enquiryRoutesUrl}/delete_enquiry/${id}`;
 export const updateEnquiryStatusUrl = (id) => `${enquiryRoutesUrl}/update_enquiry_status/${id}`;
 export const updateEnquiryVisibilityUrl = (id) => `${enquiryRoutesUrl}/update_enquiry_visibility/${id}`;
@@ -31,7 +39,9 @@ export const logoutAdminUrl = `${adminRoutesUrl}/logout`;
 
 // employee api urls
 export const employeeLoginUrl = `${employeeRoutesUrl}/employee_login`;
+export const employeeSignupUrl = `${employeeRoutesUrl}/employee_signup`;
 export const getEmployeeDetailsUrl = (id) => `${employeeRoutesUrl}/detail/${id}`;
 export const logoutEmployeeUrl = `${employeeRoutesUrl}/logout`; 
-export const getCountriesUrl = `${employeeRoutesUrl}/countries`; 
-export const getCitiesUrl =(countryId)=> `${employeeRoutesUrl}/cities/${countryId}`; 
+export const getCountriesUrl = `${api}/countries`; 
+export const getCitiesUrl =(countryId)=> `${api}/cities/${countryId}`; 
+export const generateEnquiriesUrl = `${serverUrl}/enquiry/submit_enquiry`; 

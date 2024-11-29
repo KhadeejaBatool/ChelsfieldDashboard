@@ -6,7 +6,6 @@ import axios from 'axios';
 import { FaEye } from 'react-icons/fa';
 import { IoEyeOffSharp } from 'react-icons/io5';
 import { setUser } from '../../store/userSlice';
-import { adminLoginUrl, employeeLoginUrl, getCitiesUrl, getCountriesUrl } from '../../utils/apiRoutes';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -54,22 +53,13 @@ const Login = () => {
     const [error, setError] = useState(null);
     axios.defaults.withCredentials = true;
 
-    const handleCountryChange = (e) => {
-        const countryId = e.target.value;
-        setSelectedCountry(countryId);
-        fetchCities(countryId);
-    };
-    
-    const handleCityChange = (e) => {
-        setSelectedCity(e.target.value);
-    };
 
-    
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
         // Select the endpoint based on the role
-        const endpoint = values.role === 'admin' ? adminLoginUrl : employeeLoginUrl;
+        const endpoint = '';
 
         axios.post(endpoint, {
             email: values.email,
@@ -144,42 +134,6 @@ const Login = () => {
                             </span>
                         </div>
                     </div>
-                    <div>
-                        <label htmlFor="country">Country</label>
-                        <select
-                            id="country"
-                            name="country"
-                            className="form-select"
-                            value={selectedCountry}
-                            onChange={handleCountryChange}
-                        >
-                            <option value="">Select a country</option>
-                            {countries.map((country) => (
-                                <option key={country.country_id} value={country.country_id}>
-                                    {country.country_name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="city">City</label>
-                        <select
-                            id="city"
-                            name="city"
-                            className="form-select"
-                            value={selectedCity}
-                            onChange={handleCityChange}
-                            disabled={!selectedCountry}
-                        >
-                            <option value="">Select a city</option>
-                            {cities.map((city) => (
-                                <option key={city.city_id} value={city.city_id}>
-                                    {city.city_name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
                     <div>
                         <label htmlFor="role">Role</label>
                         <select
