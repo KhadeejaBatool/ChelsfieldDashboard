@@ -7,7 +7,7 @@ import Dropdown from '../Dropdown';
 import { FaRegUserCircle } from "react-icons/fa";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import { getAdminDetailsUrl } from '../../utils/apiRoutes';
+// import { getAdminDetailsUrl } from '../../utils/apiRoutes';
 import logoutAdmin from '../../utils/logoutAdmin';
 
 const Header = () => {
@@ -30,20 +30,20 @@ const Header = () => {
 
     useEffect(() => {
         // Fetch the logged-in admin's profile details
-        axios.get(getAdminDetailsUrl(loggedInAdminId))
-            .then(result => {
-                if (result.data.Status) {
-                    console.log(result.data);
+        // axios.get(getAdminDetailsUrl(loggedInAdminId))
+        //     .then(result => {
+        //         if (result.data.Status) {
+        //             console.log(result.data);
 
-                    setAdmin({
-                        email: result.data.Result.email,
-                        password: result.data.Result.password
-                    });
-                } else {
-                    alert(result.data.Error);
-                }
-            })
-            .catch(err => console.log(err));
+        //             setAdmin({
+        //                 email: result.data.Result.email,
+        //                 password: result.data.Result.password
+        //             });
+        //         } else {
+        //             alert(result.data.Error);
+        //         }
+        //     })
+        //     .catch(err => console.log(err));
     }, []);
 
     useEffect(() => {
